@@ -8,7 +8,17 @@
     margin-bottom: -3.5px;
 }
 
-.copy-button {
+/* If inside of a SingleColorPalette, make it twice as tall */
+.SingleColorPalette .ColorBox {
+    height: 50%;
+}
+/* The "Go Back" button on the SingleColorPalette page */
+.ColorBox.go-back {
+    background-color: black;
+}
+
+.copy-button, 
+.back-button {
     width: 100px;
     height: 30px;
     position: absolute;
@@ -24,7 +34,11 @@
     line-height: 30px;
     color: white;
     text-transform: uppercase;
+    text-decoration: none;
     border: none;
+}
+
+.copy-button {    
     opacity: 0;
 }
 
@@ -43,6 +57,14 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     font-size: 12px;
+}
+
+.light-text {
+    color: white;
+}
+
+.ColorBox .dark-text {
+    color: rgba(0, 0, 0, 0.5);
 }
 
 .see-more {
