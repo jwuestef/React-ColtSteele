@@ -41,14 +41,14 @@ class PaletteFormNav extends Component {
     }
 
     render() {
-        const { classes, open, palettes, handleSubmit } = this.props
-        const { newPaletteName } = this.state
+        const { classes, open, palettes, handleSubmit, handleDrawerOpen } = this.props
+        const { formShowing } = this.state
         return (
             <div className={classes.root}>
                 <CssBaseline />
                 <AppBar position="fixed" color="default" className={classNames(classes.appBar, { [classes.appBarShift]: open, })}>
                     <Toolbar disableGutters={!open}>
-                        <IconButton color="inherit" aria-label="Open drawer" onClick={this.props.handleDrawerOpen} className={classNames(classes.menuButton, open && classes.hide)}>
+                        <IconButton color="inherit" aria-label="Open drawer" onClick={handleDrawerOpen} className={classNames(classes.menuButton, {[classes.hide]: open})}>
                             <AddToPhotosIcon />
                         </IconButton>
                         <Typography variant="h6" color="inherit" noWrap>
@@ -60,7 +60,7 @@ class PaletteFormNav extends Component {
                         <Button variant="outlined" color="primary" onClick={this.showForm} className={classes.button}>Save</Button>
                     </div>
                 </AppBar>
-                { this.state.formShowing && <PaletteMetaForm palettes={palettes} handleSubmit={handleSubmit} hideForm={this.hideForm} /> }
+                { formShowing && <PaletteMetaForm palettes={palettes} handleSubmit={handleSubmit} hideForm={this.hideForm} /> }
             </div>
         )
     }

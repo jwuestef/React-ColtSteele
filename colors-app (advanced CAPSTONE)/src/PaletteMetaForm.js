@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -56,18 +55,19 @@ class PaletteMetaForm extends Component {
             emoji: emoji.native
         }
         this.props.handleSubmit(newPalette)
+        this.setState({ stage: '' })
     }
 
     render() {
-        const { newPaletteName, open } = this.state
-        const { hideForm, handleSubmit } = this.props
+        const { newPaletteName, stage } = this.state
+        const { hideForm } = this.props
         return (
             <div>                
-                <Dialog open={open === 'emoji'} onClose={hideForm}>
+                <Dialog open={stage === 'emoji'} onClose={hideForm}>
                     <DialogTitle id="emoji-dialog">Choose an emoji</DialogTitle>
                     <Picker title="Pick a Palette Emoji" onSelect={this.savePalette} />
                 </Dialog>
-                <Dialog open={open === 'form'} onClose={hideForm} aria-labelledby="form-dialog-title">
+                <Dialog open={stage === 'form'} onClose={hideForm} aria-labelledby="form-dialog-title">
                     <ValidatorForm onSubmit={this.showEmojiPicker}>
                         <DialogTitle id="name-dialog">Choose a Palette Name</DialogTitle>
                         <DialogContent>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 import './App.css';
 import seedColors from './seedColors';
@@ -8,6 +9,7 @@ import { generatePalette } from './colorHelpers';
 import PaletteList from './PaletteList';
 import SingleColorPalette from './SingleColorPalette';
 import NewPaletteForm from './NewPaletteForm';
+import Page from './Page';
 
 
 
@@ -47,14 +49,22 @@ class App extends React.Component {
         }, this.syncLocalStorage)
     }
 
+    // Wrapping switch in an always-rendered route lets us add a transition animation. Must add location={location} to Switch now
     render() {
         return (
-            <Switch>
-                <Route exact path="/" render={(routeProps) => <PaletteList palettes={this.state.palettes} deletePalette={this.deletePalette} {...routeProps} />} />   {/* ...routeProps needed so we can use history object inside this component's hierarchy */}
-                <Route exact path="/palette/new" render={(routeProps) => <NewPaletteForm savePalette={this.savePalette} palettes={this.state.palettes} {...routeProps} />} />   {/* ...routeProps needed so we can use history object inside this component's hierarchy */}
-                <Route exact path="/palette/:id" render={(routeProps) => <Palette palette={generatePalette(this.findPalette(routeProps.match.params.id))} /> } />
-                <Route exact path="/palette/:paletteId/:colorId" render={(routeProps) => <SingleColorPalette palette={generatePalette(this.findPalette(routeProps.match.params.paletteId))} colorId={routeProps.match.params.colorId} /> } />
-            </Switch>
+            <Route render={ ({location}) => (
+                <TransitionGroup> 
+                    <CSSTransition classNames='page' timeout={500} key={location.key}>
+                        <Switch location={location}>
+                            <Route exact path="/" render={(routeProps) => <Page><PaletteList palettes={this.state.palettes} deletePalette={this.deletePalette} {...routeProps} /></Page>} />   {/* ...routeProps needed so we can use history object inside this component's hierarchy */}
+                            <Route exact path="/palette/new" render={(routeProps) => <Page><NewPaletteForm savePalette={this.savePalette} palettes={this.state.palettes} {...routeProps} /></Page>} />   {/* ...routeProps needed so we can use history object inside this component's hierarchy */}
+                            <Route exact path="/palette/:id" render={(routeProps) => <Page><Palette palette={generatePalette(this.findPalette(routeProps.match.params.id))} /></Page> } />
+                            <Route exact path="/palette/:paletteId/:colorId" render={(routeProps) => <Page><SingleColorPalette palette={generatePalette(this.findPalette(routeProps.match.params.paletteId))} colorId={routeProps.match.params.colorId} /></Page> } />
+                            <Route render={(routeProps) => <Page><PaletteList palettes={this.state.palettes} deletePalette={this.deletePalette} {...routeProps} /></Page>} />
+                        </Switch>
+                    </CSSTransition>                   
+                </TransitionGroup>
+            )} />
         );
     }
 
