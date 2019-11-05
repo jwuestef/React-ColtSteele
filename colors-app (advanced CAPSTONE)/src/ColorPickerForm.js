@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import Button from '@material-ui/core/Button';
 import { ChromePicker } from 'react-color'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
+import { withStyles } from '@material-ui/core/styles';
+
+import styles from './styles/ColorPickerFormStyles'
 
 
 
@@ -47,14 +50,14 @@ class ColorPickerForm extends Component {
     }
 
     render() {
-        const { paletteIsFull } = this.props
+        const { paletteIsFull, classes } = this.props
         const { currentColor, newColorName } = this.state
         return (
             <div>
-                <ChromePicker color={currentColor} onChangeComplete={this.updateCurrentColor} />
+                <ChromePicker color={currentColor} onChangeComplete={this.updateCurrentColor} className={classes.picker} />
                 <ValidatorForm onSubmit={this.handleSubmit}>
-                    <TextValidator value={newColorName} name="newColorName" onChange={this.handleChange} validators={["required", "isColorNameUnique", "isColorUnique"]} errorMessages={["Color name is required", "Color name already taken", "Color already used"]} />
-                    <Button varient="contained" color="primary" style={{ backgroundColor: paletteIsFull ? "grey " : currentColor }} type="submit" disabled={paletteIsFull}>{ paletteIsFull ? "Palette Full" : "Add Color"}</Button>
+                    <TextValidator value={newColorName} placeholder="Color Name" variant="filled" name="newColorName" onChange={this.handleChange} validators={["required", "isColorNameUnique", "isColorUnique"]} errorMessages={["Color name is required", "Color name already taken", "Color already used"]} className={classes.colorNameInput} margin="normal" />
+                    <Button variant="contained" color="primary" style={{ backgroundColor: paletteIsFull ? "grey " : currentColor }} type="submit" disabled={paletteIsFull} className={classes.addColor}>{ paletteIsFull ? "Palette Full" : "Add Color"}</Button>
                 </ValidatorForm>
             </div>
         )
@@ -62,4 +65,4 @@ class ColorPickerForm extends Component {
 
 }
 
-export default ColorPickerForm
+export default withStyles(styles)(ColorPickerForm)
